@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Игра: Кликни по шарикам</title>
+  <style>
+      body {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100vh;
+          margin: 0;
+          background-color: #f0f0f0;
+          user-select: none; /* Отключение выделения текста */
+      }
+      #score {
+          font-size: 24px;
+          margin-bottom: 20px;
+          pointer-events: none; /* Отключение кликабельности текста */
+      }
+      .bubble {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          position: absolute;
+          background-color: #3498db;
+          cursor: pointer;
+          transition: top 0.1s linear; /* Плавное движение */
+      }
+  </style>
+</head>
+<body>
+  <div id="score">Счет: 0</div>
+  <script>
+      let score = 0;
+
+      function spawnBubble() {
+          const bubble = document.createElement('div');
+          bubble.className = 'bubble';
+          bubble.style.left = Math.random() * (window.innerWidth - 50) + 'px';
+          bubble.style.top = '0px';
+          document.body.appendChild(bubble);
+
+          bubble.addEventListener('click', function() {
+              score++;
+              document.getElementById('score').innerText = 'Счет: ' + score;
+              bubble.remove();
+          });
+
+          let fallInterval = setInterval(() => {
+              let bubbleTop = parseFloat(bubble.style.top);
+              if (bubbleTop < window.innerHeight - 50) {
+                  bubble.style.top = bubbleTop + 25 + 'px'; // Увеличена скорость падения
+              } else {
+                  clearInterval(fallInterval);
+                  bubble.remove();
+              }
+          }, 50); // Уменьшено время интервала для более плавного движения
+      }
+
+      setInterval(spawnBubble, 1000);
+  </script>
+</body>
+</html>
